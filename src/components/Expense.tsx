@@ -20,10 +20,13 @@ interface ExpenseProps {
 }
 
 export default function Expense({ExpenseObj}: ExpenseProps): JSX.Element{
-    return <div>
-        {ExpenseObj.name}
-        {ExpenseObj.category}
-        {ExpenseObj.cost}
+    return <div className="border flex justify-between items-center ml-5 mr-5 h-12">
+
+        <div>
+            <p>{ExpenseObj.name}</p>
+            <p>{ExpenseObj.category}</p>
+        </div>
+        <p>{ExpenseObj.cost}</p>
         {ExpenseObj.recvOrSend? <p>Receiving</p> : <p>Sending</p>}
     </div>
 }

@@ -9,11 +9,15 @@ interface Expense {
   recvOrSend: boolean; //true = receiving, false = sending
 }
 
+const reduceIncoming = (expenseArray: Expense[]) => {
+    expenseArray.reduce((sum: number, expense: Expense) => expense.recvOrSend == true ? sum + expense.cost : 0, 0)
+}
+
 export default function Display(): JSX.Element {
   const [ExpenseObj, setExpenseObj] = useState<Expense>({
-    name: "",
-    category: "",
-    cost: 0,
+    name: "Pedicure",
+    category: "Self-care",
+    cost: 45.00,
     recvOrSend: false,
   });
   const [totalBalance, setTotalBalance] = useState<number>(0);
@@ -38,7 +42,7 @@ export default function Display(): JSX.Element {
         </div>
       </div>
 
-      <div className="font-bold mt-5 mb-5">
+      <div className="font-bold mt-5">
         <h4>Current Balance</h4>
         <h1 className="text-2xl opacity-60">US ${totalBalance}</h1>
       </div>
@@ -60,6 +64,10 @@ export default function Display(): JSX.Element {
             <p>History</p>
           <p>Current Month</p>
         </div>
+      </div>
+
+      <div className="mt-5 flex flex-col border ml-5 mr-5 h-auto">
+        {expenseArray.map((expense: Expense) => <Expense ExpenseObj={expense}></Expense>)}
       </div>
 
       <Expense ExpenseObj={ExpenseObj}></Expense>

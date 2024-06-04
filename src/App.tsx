@@ -10,7 +10,7 @@ import Display from './components/Display';
 
 function App() {
 
-return <div className='h-screen flex justify-center'>
+return <div className='h-screen flex justify-center ml-5 mr-5'>
     <Display></Display>
 </div>
 }
