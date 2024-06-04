@@ -19,6 +19,7 @@ export default function Display(): JSX.Element {
   const [totalBalance, setTotalBalance] = useState<number>(0);
   const [incomingBalance, setIncomingBalance] = useState<number>(0);
   const [outgoingBalance, setOutGoingBalance] = useState<number>(0);
+  const [expenseArray, setExpenseArray] = useState<Expense[]>([]);
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     //destructure the name and value from the event
@@ -27,8 +28,8 @@ export default function Display(): JSX.Element {
   };
 
   return (
-    <div className="flex flex-col border w-5/12 h-2/3 text-sm shadow-md">
-      <div className="flex justify-between font-bold bg-slate-300 bg-opacity-20 ml-5 mr-5 mt-3 p-5">
+    <div className="flex flex-col border w-5/12 h-3/4 text-sm shadow-md overflow-scroll">
+      <div className="flex justify-between font-bold bg-slate-300 bg-opacity-20 ml-5 mr-5 mt-3 p-5 shadow-md">
         <p>Expense Tracker</p>
 
         <div>
@@ -37,12 +38,12 @@ export default function Display(): JSX.Element {
         </div>
       </div>
 
-      <div className="font-bold mt-5">
+      <div className="font-bold mt-5 mb-5">
         <h4>Current Balance</h4>
         <h1 className="text-2xl opacity-60">US ${totalBalance}</h1>
       </div>
 
-      <div className="flex justify-between font-bold bg-slate-300 ml-5 mr-5 mt-3 p-5 text-sm bg-opacity-20">
+      <div className="flex justify-between font-bold bg-slate-300 ml-5 mr-5 mt-3 p-5 text-sm bg-opacity-20 shadow-md">
         <div>
           <p>Incoming</p>
           <p className="text-blue-600 text-xl">US${incomingBalance}</p>
@@ -54,15 +55,10 @@ export default function Display(): JSX.Element {
         </div>
       </div>
 
-      <div className="flex justify-between font-bold ml-5 mr-5 p-5 text-sm bg-opacity-20">
+      <div className="flex justify-between font-bold ml-5 mr-5 mt-2 text-sm bg-opacity-20">
         <div>
-          <p>History</p>
-          <p className="text-blue-600 text-xl">US${incomingBalance}</p>
-        </div>
-
-        <div>
-          <p>Outgoing</p>
-          <p className="text-red-500 text-xl">US${outgoingBalance}</p>
+            <p>History</p>
+          <p>Current Month</p>
         </div>
       </div>
 
