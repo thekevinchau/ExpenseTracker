@@ -9,7 +9,7 @@ interface ExpenseProps{
 }
 
 export default function ExpenseForms({handleInput, ExpenseObj}: ExpenseProps):JSX.Element {
-    return <div>
+    return <div className="border flex flex-col">
         <form>
             <label>Name of Expense</label>
             <input name="name" value={ExpenseObj.name}onChange={handleInput}></input>
