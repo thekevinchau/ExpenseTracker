@@ -14,21 +14,12 @@ export default function Display(): JSX.Element {
     name: "Pedicure",
     category: "Self-care",
     cost: 45.0,
-    recvOrSend: true,
+    recvOrSend: false,
   });
-  const [totalBalance, setTotalBalance] = useState<number>(0);
+  const [totalBalance, setTotalBalance] = useState<number>(0.00);
   const [incomingBalance, setIncomingBalance] = useState<number>(0);
   const [outgoingBalance, setOutGoingBalance] = useState<number>(0);
-  const [expenseArray, setExpenseArray] = useState<Expense[]>([ExpenseObj]);
-
-  const reduceIncoming = () => {
-    const sum = expenseArray.reduce(
-      (sum: number, expense: Expense) =>
-        expense.recvOrSend === true ? sum + expense.cost : 0,
-      0
-    );
-    setTotalBalance(totalBalance + sum);
-  };
+  const [expenseArray, setExpenseArray] = useState<Expense[]>([]);
 
   const addExpense = () => {
     const resetExpense = {
@@ -38,8 +29,13 @@ export default function Display(): JSX.Element {
         recvOrSend: false
     }
     setExpenseArray([...expenseArray, ExpenseObj]);
+    calculateBalance(ExpenseObj.recvOrSend);
     setExpenseObj(resetExpense);
 
+  }
+
+  const calculateBalance = (transactionType: boolean) => {
+    transactionType === true ? setTotalBalance((totalBalance + ExpenseObj.cost)) : setTotalBalance(totalBalance - ExpenseObj.cost);
   }
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,7 +44,7 @@ export default function Display(): JSX.Element {
     setExpenseObj({ ...ExpenseObj, [name]: value });
   };
 
-  console.log(reduceIncoming);
+
   return (
     <div className="flex flex-col border w-5/12 h-3/4 text-sm shadow-md overflow-scroll">
       <div className="flex justify-between font-bold bg-slate-300 bg-opacity-20 ml-5 mr-5 mt-3 p-5 shadow-md">
@@ -88,7 +84,7 @@ export default function Display(): JSX.Element {
         {expenseArray.map((expense: Expense) => (
           <Expense ExpenseObj={expense}></Expense>
         ))}
-        <button onClick={reduceIncoming}>sum</button>
+        <button onClick={addExpense}>sum</button>
       </div>
     </div>
   );
