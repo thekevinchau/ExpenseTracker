@@ -9,21 +9,38 @@ interface Expense {
   recvOrSend: boolean; //true = receiving, false = sending
 }
 
-const reduceIncoming = (expenseArray: Expense[]) => {
-    expenseArray.reduce((sum: number, expense: Expense) => expense.recvOrSend == true ? sum + expense.cost : 0, 0)
-}
-
 export default function Display(): JSX.Element {
   const [ExpenseObj, setExpenseObj] = useState<Expense>({
     name: "Pedicure",
     category: "Self-care",
-    cost: 45.00,
-    recvOrSend: false,
+    cost: 45.0,
+    recvOrSend: true,
   });
   const [totalBalance, setTotalBalance] = useState<number>(0);
   const [incomingBalance, setIncomingBalance] = useState<number>(0);
   const [outgoingBalance, setOutGoingBalance] = useState<number>(0);
-  const [expenseArray, setExpenseArray] = useState<Expense[]>([]);
+  const [expenseArray, setExpenseArray] = useState<Expense[]>([ExpenseObj]);
+
+  const reduceIncoming = () => {
+    const sum = expenseArray.reduce(
+      (sum: number, expense: Expense) =>
+        expense.recvOrSend === true ? sum + expense.cost : 0,
+      0
+    );
+    setTotalBalance(totalBalance + sum);
+  };
+
+  const addExpense = () => {
+    const resetExpense = {
+        name: "",
+        category: "",
+        cost: 0,
+        recvOrSend: false
+    }
+    setExpenseArray([...expenseArray, ExpenseObj]);
+    setExpenseObj(resetExpense);
+
+  }
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     //destructure the name and value from the event
@@ -31,6 +48,7 @@ export default function Display(): JSX.Element {
     setExpenseObj({ ...ExpenseObj, [name]: value });
   };
 
+  console.log(reduceIncoming);
   return (
     <div className="flex flex-col border w-5/12 h-3/4 text-sm shadow-md overflow-scroll">
       <div className="flex justify-between font-bold bg-slate-300 bg-opacity-20 ml-5 mr-5 mt-3 p-5 shadow-md">
@@ -61,16 +79,17 @@ export default function Display(): JSX.Element {
 
       <div className="flex justify-between font-bold ml-5 mr-5 mt-2 text-sm bg-opacity-20">
         <div>
-            <p>History</p>
+          <p>History</p>
           <p>Current Month</p>
         </div>
       </div>
 
-      <div className="mt-5 flex flex-col border ml-5 mr-5 h-auto">
-        {expenseArray.map((expense: Expense) => <Expense ExpenseObj={expense}></Expense>)}
+      <div className="mt-5 flex flex-col h-auto over-flow mb-5">
+        {expenseArray.map((expense: Expense) => (
+          <Expense ExpenseObj={expense}></Expense>
+        ))}
+        <button onClick={reduceIncoming}>sum</button>
       </div>
-
-      <Expense ExpenseObj={ExpenseObj}></Expense>
     </div>
   );
 }
