@@ -5,7 +5,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'pie-chart': "url('/src/assets/pie-chart.png')"
+      }
+    },
   },
   plugins: [],
 }

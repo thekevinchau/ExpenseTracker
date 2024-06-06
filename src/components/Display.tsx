@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Expense from "./Expense";
 import ExpenseForms from "./ExpenseForms";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faChartPie, faClock, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 interface Expense {
   name: string;
@@ -16,34 +18,34 @@ export default function Display(): JSX.Element {
     cost: 45.0,
     recvOrSend: false,
   });
-  const [totalBalance, setTotalBalance] = useState<number>(0.00);
+  const [totalBalance, setTotalBalance] = useState<number>(0.0);
   const [incomingBalance, setIncomingBalance] = useState<number>(0);
   const [outgoingBalance, setOutGoingBalance] = useState<number>(0);
   const [expenseArray, setExpenseArray] = useState<Expense[]>([]);
 
   const addExpense = () => {
     const resetExpense = {
-        name: "",
-        category: "",
-        cost: 0,
-        recvOrSend: false
-    }
+      name: "",
+      category: "",
+      cost: 0,
+      recvOrSend: false,
+    };
     setExpenseArray([...expenseArray, ExpenseObj]);
     calculateBalance(ExpenseObj.recvOrSend);
     setExpenseObj(resetExpense);
-
-  }
+  };
 
   const calculateBalance = (transactionType: boolean) => {
-    transactionType === true ? setTotalBalance((totalBalance + ExpenseObj.cost)) : setTotalBalance(totalBalance - ExpenseObj.cost);
-  }
+    transactionType === true
+      ? setTotalBalance(totalBalance + ExpenseObj.cost)
+      : setTotalBalance(totalBalance - ExpenseObj.cost);
+  };
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     //destructure the name and value from the event
     const { name, value } = event.target;
     setExpenseObj({ ...ExpenseObj, [name]: value });
   };
-
 
   return (
     <div className="flex flex-col border w-5/12 h-3/4 text-sm shadow-md overflow-scroll">
@@ -73,10 +75,15 @@ export default function Display(): JSX.Element {
         </div>
       </div>
 
-      <div className="flex justify-between font-bold ml-5 mr-5 mt-2 text-sm bg-opacity-20">
+      <div className="flex justify-between font-bold ml-5 mr-5 mt-3 text-sm bg-opacity-20">
         <div>
-          <p>History</p>
           <p>Current Month</p>
+        </div>
+        <div className="h-auto flex justify-around w-5/12 items-center">
+            <button ><FontAwesomeIcon icon={faPlus} /></button>
+            <button><FontAwesomeIcon icon={faBars} /></button>
+            <button><FontAwesomeIcon icon={faChartPie} /></button>
+            <button><FontAwesomeIcon icon={faClock}/></button>
         </div>
       </div>
 
