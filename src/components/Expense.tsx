@@ -27,7 +27,7 @@ export default function Expense({ExpenseObj}: ExpenseProps): JSX.Element{
     </div>
 
     <div className="self-end">
-      <p>${ExpenseObj.cost.toFixed(2)}</p>
+      <p>${ExpenseObj.cost}</p>
       <p className="text-red-500 text-xl"></p>
     </div>
   </div>

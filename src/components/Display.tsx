@@ -2,7 +2,8 @@ import { useState } from "react";
 import Expense from "./Expense";
 import ExpenseForms from "./ExpenseForms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faChartPie, faClock, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faChartPie, faClock, faGear, faPlus, faRightToBracket } from "@fortawesome/free-solid-svg-icons";
+import IO_Block from "./IncomingOutgoing";
 
 interface Expense {
   name: string;
@@ -22,6 +23,7 @@ export default function Display(): JSX.Element {
   const [incomingBalance, setIncomingBalance] = useState<number>(0);
   const [outgoingBalance, setOutGoingBalance] = useState<number>(0);
   const [expenseArray, setExpenseArray] = useState<Expense[]>([]);
+  const [pageState, setPageState] = useState<string>("empty");
 
   const addExpense = () => {
     const resetExpense = {
@@ -36,15 +38,20 @@ export default function Display(): JSX.Element {
   };
 
   const calculateBalance = (transactionType: boolean) => {
-    transactionType === true
-      ? setTotalBalance(totalBalance + ExpenseObj.cost)
-      : setTotalBalance(totalBalance - ExpenseObj.cost);
+    if (transactionType === true){
+        setTotalBalance(totalBalance + ExpenseObj.cost);
+        setIncomingBalance(incomingBalance + ExpenseObj.cost)
+    }
+    else if (transactionType === false){
+        setTotalBalance(totalBalance - ExpenseObj.cost);
+        setOutGoingBalance(outgoingBalance + ExpenseObj.cost);
+    }
   };
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     //destructure the name and value from the event
     const { name, value } = event.target;
-    setExpenseObj({ ...ExpenseObj, [name]: value });
+    setExpenseObj({ ...ExpenseObj, [name]: name === "cost" ? parseFloat(value) : value});
   };
 
   return (
@@ -52,38 +59,28 @@ export default function Display(): JSX.Element {
       <div className="flex justify-between font-bold bg-slate-300 bg-opacity-20 ml-5 mr-5 mt-3 p-5 shadow-md">
         <p>Expense Tracker</p>
 
-        <div>
-          <button className="mr-5">Min</button>
-          <button>Logout</button>
+        <div className="w-16 flex justify-around">
+          <button><FontAwesomeIcon icon={faGear} size="xl" /></button>
+          <button><FontAwesomeIcon icon={faRightToBracket} size="xl" /></button>
         </div>
       </div>
 
       <div className="font-bold mt-5">
         <h4>Current Balance</h4>
-        <h1 className="text-2xl opacity-60">US ${totalBalance}</h1>
+        <h1 className="text-2xl opacity-60">US ${totalBalance.toFixed(2)}</h1>
       </div>
-
-      <div className="flex justify-between font-bold bg-slate-300 ml-5 mr-5 mt-3 p-5 text-sm bg-opacity-20 shadow-md">
-        <div>
-          <p>Incoming</p>
-          <p className="text-blue-600 text-xl">US${incomingBalance}</p>
-        </div>
-
-        <div>
-          <p>Outgoing</p>
-          <p className="text-red-500 text-xl">US${outgoingBalance}</p>
-        </div>
-      </div>
+      
+      <IO_Block incoming={incomingBalance} outgoing={outgoingBalance}></IO_Block>
 
       <div className="flex justify-between font-bold ml-5 mr-5 mt-3 text-sm bg-opacity-20">
         <div>
           <p>Current Month</p>
         </div>
         <div className="h-auto flex justify-around w-5/12 items-center">
-            <button ><FontAwesomeIcon icon={faPlus} /></button>
-            <button><FontAwesomeIcon icon={faBars} /></button>
-            <button><FontAwesomeIcon icon={faChartPie} /></button>
-            <button><FontAwesomeIcon icon={faClock}/></button>
+            <button className="border w-7 h-7 hover:bg-green-500" onClick={() => setPageState("addExpense")}><FontAwesomeIcon icon={faPlus} size="lg" /></button>
+            <button className="border w-7 h-7 hover:bg-blue-400" onClick={() => setPageState("listView")}><FontAwesomeIcon icon={faBars} size="lg" /></button>
+            <button className="border w-7 h-7 hover:bg-orange-500" onClick={() => setPageState("stats")}><FontAwesomeIcon icon={faChartPie} size="lg"/></button>
+            <button className="border w-7 h-7 hover:bg-red-600" onClick={() => setPageState("history")}><FontAwesomeIcon icon={faClock} size="lg"/></button>
         </div>
       </div>
 
@@ -91,7 +88,6 @@ export default function Display(): JSX.Element {
         {expenseArray.map((expense: Expense) => (
           <Expense ExpenseObj={expense}></Expense>
         ))}
-        <button onClick={addExpense}>sum</button>
       </div>
     </div>
   );
