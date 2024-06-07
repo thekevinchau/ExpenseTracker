@@ -22,7 +22,7 @@ export default function Display(): JSX.Element {
   const [totalBalance, setTotalBalance] = useState<number>(0.0);
   const [incomingBalance, setIncomingBalance] = useState<number>(0);
   const [outgoingBalance, setOutGoingBalance] = useState<number>(0);
-  const [expenseArray, setExpenseArray] = useState<Expense[]>([]);
+  const [expenseArray, setExpenseArray] = useState<Expense[]>([ExpenseObj]);
   const [pageState, setPageState] = useState<string>("empty");
 
   const addExpense = () => {
@@ -77,18 +77,20 @@ export default function Display(): JSX.Element {
           <p>Current Month</p>
         </div>
         <div className="h-auto flex justify-around w-5/12 items-center">
-            <button className="border w-7 h-7 hover:bg-green-500" onClick={() => setPageState("addExpense")}><FontAwesomeIcon icon={faPlus} size="lg" /></button>
+            <button className="border w-7 h-7 hover:bg-green-500" onClick={() => setPageState("expenseForms")}><FontAwesomeIcon icon={faPlus} size="lg" /></button>
             <button className="border w-7 h-7 hover:bg-blue-400" onClick={() => setPageState("listView")}><FontAwesomeIcon icon={faBars} size="lg" /></button>
             <button className="border w-7 h-7 hover:bg-orange-500" onClick={() => setPageState("stats")}><FontAwesomeIcon icon={faChartPie} size="lg"/></button>
             <button className="border w-7 h-7 hover:bg-red-600" onClick={() => setPageState("history")}><FontAwesomeIcon icon={faClock} size="lg"/></button>
         </div>
       </div>
 
-      <div className="mt-5 flex flex-col h-auto over-flow mb-5">
+      {pageState === "expenseForms" && <ExpenseForms handleInput={handleInput} ExpenseObj={ExpenseObj}></ExpenseForms>}
+
+      {pageState === "listView" && <div className="mt-5 flex flex-col h-auto over-flow mb-5">
         {expenseArray.map((expense: Expense) => (
           <Expense ExpenseObj={expense}></Expense>
         ))}
-      </div>
+      </div>}
     </div>
   );
 }
