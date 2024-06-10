@@ -2,7 +2,15 @@ import { useState } from "react";
 import Expense from "./Expense";
 import ExpenseForms from "./ExpenseForms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faChartPie, faClock, faGear, faPlus, faRightToBracket } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faChartPie,
+  faClock,
+  faGear,
+  faMoneyBillTransfer,
+  faPlus,
+  faRightToBracket,
+} from "@fortawesome/free-solid-svg-icons";
 import IO_Block from "./IncomingOutgoing";
 
 interface Expense {
@@ -14,16 +22,16 @@ interface Expense {
 
 export default function Display(): JSX.Element {
   const [ExpenseObj, setExpenseObj] = useState<Expense>({
-    name: "Pedicure",
-    category: "Self-care",
-    cost: 45.0,
+    name: "",
+    category: "",
+    cost: 0,
     recvOrSend: false,
   });
   const [totalBalance, setTotalBalance] = useState<number>(0.0);
   const [incomingBalance, setIncomingBalance] = useState<number>(0);
   const [outgoingBalance, setOutGoingBalance] = useState<number>(0);
-  const [expenseArray, setExpenseArray] = useState<Expense[]>([ExpenseObj]);
-  const [pageState, setPageState] = useState<string>("empty");
+  const [expenseArray, setExpenseArray] = useState<Expense[]>([]);
+  const [pageState, setPageState] = useState<string>("listView");
 
   const addExpense = () => {
     const resetExpense = {
@@ -38,20 +46,22 @@ export default function Display(): JSX.Element {
   };
 
   const calculateBalance = (transactionType: boolean) => {
-    if (transactionType === true){
-        setTotalBalance(totalBalance + ExpenseObj.cost);
-        setIncomingBalance(incomingBalance + ExpenseObj.cost)
-    }
-    else if (transactionType === false){
-        setTotalBalance(totalBalance - ExpenseObj.cost);
-        setOutGoingBalance(outgoingBalance + ExpenseObj.cost);
+    if (transactionType === true) {
+      setTotalBalance(totalBalance + ExpenseObj.cost);
+      setIncomingBalance(incomingBalance + ExpenseObj.cost);
+    } else if (transactionType === false) {
+      setTotalBalance(totalBalance - ExpenseObj.cost);
+      setOutGoingBalance(outgoingBalance + ExpenseObj.cost);
     }
   };
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     //destructure the name and value from the event
     const { name, value } = event.target;
-    setExpenseObj({ ...ExpenseObj, [name]: name === "cost" ? parseFloat(value) : value});
+    setExpenseObj({
+      ...ExpenseObj,
+      [name]: name === "cost" ? parseFloat(value) : value,
+    });
   };
 
   return (
@@ -60,8 +70,12 @@ export default function Display(): JSX.Element {
         <p>Expense Tracker</p>
 
         <div className="w-16 flex justify-around">
-          <button><FontAwesomeIcon icon={faGear} size="xl" /></button>
-          <button><FontAwesomeIcon icon={faRightToBracket} size="xl" /></button>
+          <button>
+            <FontAwesomeIcon icon={faGear} size="xl" />
+          </button>
+          <button>
+            <FontAwesomeIcon icon={faRightToBracket} size="xl" />
+          </button>
         </div>
       </div>
 
@@ -69,28 +83,62 @@ export default function Display(): JSX.Element {
         <h4>Current Balance</h4>
         <h1 className="text-2xl opacity-60">US ${totalBalance.toFixed(2)}</h1>
       </div>
-      
-      <IO_Block incoming={incomingBalance} outgoing={outgoingBalance}></IO_Block>
+
+      <IO_Block
+        incoming={incomingBalance}
+        outgoing={outgoingBalance}
+      ></IO_Block>
 
       <div className="flex justify-between font-bold ml-5 mr-5 mt-3 text-sm bg-opacity-20">
         <div>
           <p>Current Month</p>
         </div>
         <div className="h-auto flex justify-around w-5/12 items-center">
-            <button className="border w-7 h-7 hover:bg-green-500" onClick={() => setPageState("expenseForms")}><FontAwesomeIcon icon={faPlus} size="lg" /></button>
-            <button className="border w-7 h-7 hover:bg-blue-400" onClick={() => setPageState("listView")}><FontAwesomeIcon icon={faBars} size="lg" /></button>
-            <button className="border w-7 h-7 hover:bg-orange-500" onClick={() => setPageState("stats")}><FontAwesomeIcon icon={faChartPie} size="lg"/></button>
-            <button className="border w-7 h-7 hover:bg-red-600" onClick={() => setPageState("history")}><FontAwesomeIcon icon={faClock} size="lg"/></button>
+          <button
+            className="border w-7 h-7 hover:bg-green-500"
+            onClick={() => setPageState("expenseForms")}
+          >
+            <FontAwesomeIcon icon={faPlus} size="lg" />
+          </button>
+          <button
+            className="border w-7 h-7 hover:bg-blue-400"
+            onClick={() => setPageState("listView")}
+          >
+            <FontAwesomeIcon icon={faBars} size="lg" />
+          </button>
+          <button
+            className="border w-7 h-7 hover:bg-orange-500"
+            onClick={() => setPageState("stats")}
+          >
+            <FontAwesomeIcon icon={faChartPie} size="lg" />
+          </button>
+          <button
+            className="border w-7 h-7 hover:bg-red-600"
+            onClick={() => setPageState("history")}
+          >
+            <FontAwesomeIcon icon={faClock} size="lg" />
+          </button>
         </div>
       </div>
+      {pageState === "expenseForms" && (
+        <ExpenseForms
+          handleInput={handleInput}
+          ExpenseObj={ExpenseObj}
+        ></ExpenseForms>
+      )}
 
-      {pageState === "expenseForms" && <ExpenseForms handleInput={handleInput} ExpenseObj={ExpenseObj}></ExpenseForms>}
-
-      {pageState === "listView" && <div className="mt-5 flex flex-col h-auto over-flow mb-5">
-        {expenseArray.map((expense: Expense) => (
-          <Expense ExpenseObj={expense}></Expense>
-        ))}
-      </div>}
+      {pageState === "listView" && expenseArray.length ? (
+        <div className="mt-5 flex flex-col h-auto over-flow mb-5">
+          {expenseArray.map((expense: Expense) => (
+            <Expense ExpenseObj={expense}></Expense>
+          ))}
+        </div>
+      ) : pageState === "listView" && !expenseArray.length ? (
+        <div className="text-3xl h-1/2 flex flex-col justify-center items-center">
+          <FontAwesomeIcon icon={faMoneyBillTransfer} size="2xl" />
+          <p className="mt-5">Add your first transaction!</p>
+        </div>
+      ) : null}
     </div>
   );
 }
