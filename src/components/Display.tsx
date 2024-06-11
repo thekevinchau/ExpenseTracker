@@ -3,12 +3,8 @@ import Expense from "./Expense";
 import ExpenseForms from "./ExpenseForms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faBars,
-  faChartPie,
-  faClock,
   faGear,
   faMoneyBillTransfer,
-  faPlus,
   faRightToBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import IO_Block from "./IncomingOutgoing";
@@ -18,7 +14,7 @@ interface Expense {
   name: string;
   category: string;
   cost: number;
-  recvOrSend: boolean; //true = receiving, false = sending
+  type: string; //true = receiving, false = sending
 }
 
 export default function Display(): JSX.Element {
@@ -26,7 +22,7 @@ export default function Display(): JSX.Element {
     name: "",
     category: "",
     cost: 0,
-    recvOrSend: false,
+    type: "",
   });
   const [totalBalance, setTotalBalance] = useState<number>(0.0);
   const [incomingBalance, setIncomingBalance] = useState<number>(0);
@@ -39,22 +35,31 @@ export default function Display(): JSX.Element {
       name: "",
       category: "",
       cost: 0,
-      recvOrSend: false,
+      type: "",
     };
     setExpenseArray([...expenseArray, ExpenseObj]);
-    calculateBalance(ExpenseObj.recvOrSend);
+    calculateBalance(ExpenseObj.type);
     setExpenseObj(resetExpense);
+    setPageState("listView");
   };
 
-  const calculateBalance = (transactionType: boolean) => {
-    if (transactionType === true) {
+  const calculateBalance = (transactionType: string) => {
+    if (transactionType === "incoming") {
       setTotalBalance(totalBalance + ExpenseObj.cost);
       setIncomingBalance(incomingBalance + ExpenseObj.cost);
-    } else if (transactionType === false) {
+    } else if (transactionType === "outgoing") {
       setTotalBalance(totalBalance - ExpenseObj.cost);
       setOutGoingBalance(outgoingBalance + ExpenseObj.cost);
     }
   };
+
+  const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const {name, value} = event.target;
+    setExpenseObj({
+      ...ExpenseObj,
+      [name]: value
+    })
+  }
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     //destructure the name and value from the event
@@ -95,6 +100,8 @@ export default function Display(): JSX.Element {
         <ExpenseForms
           handleInput={handleInput}
           ExpenseObj={ExpenseObj}
+          addExpense={addExpense}
+          handleSelect={handleSelect}
         ></ExpenseForms>
       )}
 
