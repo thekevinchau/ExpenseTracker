@@ -35,7 +35,7 @@ export default function ExpenseForms({
         />
 
 
-        <Select placeholder="Select Option" variant="filled" size="md" className="text-center" name="category">
+        <Select placeholder="Select Option" variant="filled" size="md" className="text-center" name="category" value={ExpenseObj.category} onChange={handleSelect}>
           <option value="Personal Expenses">Personal Expenses</option>
           <option value="Health">Health</option>
         </Select>

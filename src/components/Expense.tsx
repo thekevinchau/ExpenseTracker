@@ -20,7 +20,7 @@ interface ExpenseProps {
 }
 
 export default function Expense({ExpenseObj}: ExpenseProps): JSX.Element{
-    return <div className="flex justify-between bg-slate-300 ml-5 mr-5 p-5 text-sm bg-opacity-20 shadow-md">
+    return <div className="flex justify-between bg-slate-300 ml-5 mr-5 mb-2 p-5 text-sm bg-opacity-20 shadow-md">
     <div>
       <p className="font-bold">{ExpenseObj.name}</p>
       <p className="text-xs ml-[-0.7rem]">{ExpenseObj.category}</p>
