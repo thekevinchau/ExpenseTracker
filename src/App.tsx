@@ -1,17 +1,15 @@
-/*
-Part 1: Total Balance
-    - Create state to handle total balance. This will sum the costs and display them.
 
-*/
 
 
 import './App.css'
 import Display from './components/Display';
+import Settings from './components/Settings';
 
 function App() {
 
-return <div className='h-screen flex justify-center ml-5 mr-5'>
+return <div className='h-screen flex justify-center'>
     <Display></Display>
+    <Settings></Settings>
 </div>
 }
 
