@@ -16,7 +16,11 @@ interface Expense {
   type: string; //true = receiving, false = sending
 }
 
-export default function Display(): JSX.Element {
+interface DisplayProps {
+  toggleSettings: () => void;
+}
+
+export default function Display({toggleSettings}: DisplayProps): JSX.Element {
   const emptyExpense = {
     name: "", category: "", cost: 0, type: ""
   }
@@ -26,7 +30,7 @@ export default function Display(): JSX.Element {
   const [outgoingBalance, setOutGoingBalance] = useState<number>(0);
   const [expenseArray, setExpenseArray] = useState<Expense[]>([]);
   const [pageState, setPageState] = useState<string>("listView");
-  const isExpenseArrayPopulated = pageState === "listView" && expenseArray.length
+  const isExpenseArrayPopulated = (pageState === "listView" && expenseArray.length)
 
   const addExpense = () => {
     setExpenseArray([...expenseArray, ExpenseObj]);
@@ -63,9 +67,8 @@ export default function Display(): JSX.Element {
   };
 
   return (
-    <div className="flex flex-col border w-5/12 h-3/4 text-sm shadow-md text-sky-900">
-      <ExpenseHeader></ExpenseHeader>
-
+    <div className="flex flex-col border w-5/12 h-3/4 text-sm shadow-2xl text-sky-900">
+      <ExpenseHeader toggleSettings={toggleSettings}></ExpenseHeader>
       <div className="font-bold mt-5">
         <h4>Current Balance</h4>
         <h1 className="text-2xl text-black">US ${totalBalance.toFixed(2)}</h1>
@@ -90,7 +93,7 @@ export default function Display(): JSX.Element {
         {expenseArray.map((expense: Expense, id: number) => (<Expense ExpenseObj={expense} key={id}></Expense>))}
         </div>}
       
-      {!isExpenseArrayPopulated && (
+      {isExpenseArrayPopulated === false  && (
         <div className="text-3xl h-1/2 flex flex-col justify-center items-center">
           <FontAwesomeIcon icon={faMoneyBillTransfer} size="2xl" />
           <p className="mt-5">Add your first transaction!</p>
