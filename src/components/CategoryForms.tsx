@@ -9,11 +9,11 @@ interface CategoryFormsProps {
 
 let isAlertShown: boolean;
 
-function AlertBox(): JSX.Element {
+export function AlertBox(): JSX.Element {
   return (
     <Alert status="warning" className="mt-1">
       <AlertIcon />
-      WARNING: Please input a category!
+      WARNING: You need to input a value!
     </Alert>
   );
 }
@@ -27,13 +27,11 @@ export const CategoryForms = ({ setPageState }: CategoryFormsProps) => {
   };
 
   const addToCategoryArray = () => {
-
-    categoryObj.name === "" ? isAlertShown = true : isAlertShown = false
-
+    categoryObj.name === "" ? (isAlertShown = true) : (isAlertShown = false);
     const resetCategoryObject = { name: "" };
     setCategoryArray([...categoryArray, categoryObj]);
     setCategoryObj(resetCategoryObject);
-    console.log(categoryArray)
+    console.log(categoryArray);
   };
 
   return (
@@ -56,12 +54,13 @@ export const CategoryForms = ({ setPageState }: CategoryFormsProps) => {
             variant="filled"
             onChange={handleCategoryInput}
           ></Input>
-          <Button
-            colorScheme="blue"
+          <button
             onClick={() => addToCategoryArray()}
+            disabled={isAlertShown === true}
+            className="transition rounded-md ease-in-out delay-150 border text-sky-500 border-sky-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 hover:text-white hover:border-none duration-300 w-64"
           >
             Add
-          </Button>
+          </button>
         </ButtonGroup>
         {isAlertShown === true && <AlertBox></AlertBox>}
       </div>

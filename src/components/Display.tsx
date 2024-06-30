@@ -30,7 +30,7 @@ export default function Display({toggleSettings}: DisplayProps): JSX.Element {
   const [outgoingBalance, setOutGoingBalance] = useState<number>(0);
   const [expenseArray, setExpenseArray] = useState<Expense[]>([]);
   const [pageState, setPageState] = useState<string>("listView");
-  const isExpenseArrayPopulated = (pageState === "listView" && expenseArray.length)
+  const isExpenseArrayPopulated = (pageState === "listView" && expenseArray.length > 0)
 
   const addExpense = () => {
     setExpenseArray([...expenseArray, ExpenseObj]);
@@ -89,11 +89,11 @@ export default function Display({toggleSettings}: DisplayProps): JSX.Element {
         ></ExpenseForms>
       )}
 
-      {isExpenseArrayPopulated && <div className="mt-5 flex flex-col h-auto overflow-scroll mb-5">
+      {isExpenseArrayPopulated && pageState === "listView" && <div className="mt-5 flex flex-col h-auto overflow-scroll mb-5">
         {expenseArray.map((expense: Expense, id: number) => (<Expense ExpenseObj={expense} key={id}></Expense>))}
         </div>}
       
-      {isExpenseArrayPopulated === false  && (
+      {isExpenseArrayPopulated === false  && pageState === "listView" && (
         <div className="text-3xl h-1/2 flex flex-col justify-center items-center">
           <FontAwesomeIcon icon={faMoneyBillTransfer} size="2xl" />
           <p className="mt-5">Add your first transaction!</p>
