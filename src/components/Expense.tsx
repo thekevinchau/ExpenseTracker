@@ -9,26 +9,29 @@ Step 1: Consider an object interface for an expense.
         - Whether it is incoming or outgoing (money being paid to you or you paying money)
 */
 
-
 interface ExpenseProps {
-    ExpenseObj: {
-        name: string,
-        category: string,
-        cost: number,
-        type: string, //true = receiving, false = sending
-    }
+  ExpenseObj: {
+    name: string;
+    category: string;
+    cost: number;
+    type: string;
+  };
 }
 
-export default function Expense({ExpenseObj}: ExpenseProps): JSX.Element{
-    return <div className="flex justify-between bg-slate-300 ml-5 mr-5 mb-2 p-5 text-sm bg-opacity-20 shadow-md">
-    <div>
-      <p className="font-bold">{ExpenseObj.name}</p>
-      <p className="text-xs ml-[-0.7rem]">{ExpenseObj.category}</p>
-    </div>
+export default function Expense({ ExpenseObj }: ExpenseProps): JSX.Element {
 
-    <div className="self-end">
-      <p>${ExpenseObj.cost.toFixed(2)}</p>
-      <p className="text-red-500 text-xl"></p>
+  const outgoingTextStyle = "text-red-600";
+  const incomingTextStyle = "text-green-500";
+
+  return (
+    <div className="ml-5 mr-5 flex">
+      <div className="w-full">
+        <p className="font-bold flex">{ExpenseObj.name}</p>
+        <div className="flex justify-between">
+          <p>{ExpenseObj.category}</p>
+          <p className={ExpenseObj.type === "incoming" ? incomingTextStyle : outgoingTextStyle}>${ExpenseObj.cost.toFixed(2)}</p>
+        </div>
+      </div>
     </div>
-  </div>
+  );
 }
