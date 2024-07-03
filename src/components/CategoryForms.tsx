@@ -1,39 +1,17 @@
-import { Alert, AlertIcon, ButtonGroup, Input } from "@chakra-ui/react";
+import {ButtonGroup, Input } from "@chakra-ui/react";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { Category } from "./Category";
 
 interface CategoryFormsProps {
-  setPageState: (page: string) => void;
+  setPageState: (page: string) => void,
+  addToCategoryArray: () => void,
+  handleCategoryInput: (event: React.ChangeEvent<HTMLInputElement>) => void,
+  categories: string[],
+  categoryName: string
 }
 
-let isAlertShown: boolean;
-
-export function AlertBox(): JSX.Element {
-  return (
-    <Alert status="warning" className="mt-1">
-      <AlertIcon />
-      WARNING: You need to input a value!
-    </Alert>
-  );
-}
-
-export const CategoryForms = ({ setPageState }: CategoryFormsProps) => {
-  const [categoryArray, setCategoryArray] = useState<{ name: string }[]>([]);
-  const [categoryObj, setCategoryObj] = useState({ name: "" });
-  const handleCategoryInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    setCategoryObj({ name: value });
-  };
-
-  const addToCategoryArray = () => {
-    categoryObj.name === "" ? (isAlertShown = true) : (isAlertShown = false);
-    const resetCategoryObject = { name: "" };
-    setCategoryArray([...categoryArray, categoryObj]);
-    setCategoryObj(resetCategoryObject);
-    console.log(categoryArray);
-  };
-
+export const CategoryForms = ({ setPageState, addToCategoryArray, handleCategoryInput, categoryName, categories}: CategoryFormsProps) => {
   return (
     <div className="w-full text-sm text-sky-900 h-full">
       <div className="flex justify-between">
@@ -52,17 +30,23 @@ export const CategoryForms = ({ setPageState }: CategoryFormsProps) => {
             className="text-center font-bold"
             placeholder="Category"
             variant="filled"
+            defaultValue=""
+            value={categoryName}
             onChange={handleCategoryInput}
           ></Input>
           <button
-            onClick={() => addToCategoryArray()}
-            disabled={isAlertShown === true}
+            onClick={addToCategoryArray}
+            disabled={categoryName === ""}
             className="transition rounded-md ease-in-out delay-150 border text-sky-500 border-sky-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 hover:text-white hover:border-none duration-300 w-64"
           >
             Add
           </button>
         </ButtonGroup>
-        {isAlertShown === true && <AlertBox></AlertBox>}
+        <div>
+          {categories.map((category: string) => (
+            <Category name={category}></Category>
+          ))}
+        </div>
       </div>
     </div>
   );

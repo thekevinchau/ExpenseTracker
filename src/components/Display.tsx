@@ -2,9 +2,7 @@ import { useState } from "react";
 import Expense from "./Expense";
 import ExpenseForms from "./ExpenseForms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faMoneyBillTransfer,
-} from "@fortawesome/free-solid-svg-icons";
+import {faMoneyBillTransfer} from "@fortawesome/free-solid-svg-icons";
 import IO_Block from "./IncomingOutgoing";
 import MenuButtons from "./MenuButtons";
 import ExpenseHeader from "./ExpenseHeader";
@@ -20,10 +18,11 @@ interface DisplayProps {
   toggleSettings: () => void;
 }
 
+const emptyExpense = {
+  name: "", category: "", cost: 0, type: ""
+}
+
 export default function Display({toggleSettings}: DisplayProps): JSX.Element {
-  const emptyExpense = {
-    name: "", category: "", cost: 0, type: ""
-  }
   const [ExpenseObj, setExpenseObj] = useState<Expense>(emptyExpense);
   const [totalBalance, setTotalBalance] = useState<number>(0.0);
   const [incomingBalance, setIncomingBalance] = useState<number>(0);
@@ -86,14 +85,15 @@ export default function Display({toggleSettings}: DisplayProps): JSX.Element {
           handleSelect={handleSelect}
           addExpense={addExpense}
           ExpenseObj={ExpenseObj}
+          categories={categoryArray}
         ></ExpenseForms>
       )}
 
-      {isExpenseArrayPopulated && pageState === "listView" && <div className="mt-5 flex flex-col h-auto overflow-scroll mb-5">
+      {(isExpenseArrayPopulated && pageState === "listView") && <div className="mt-5 flex flex-col h-auto overflow-scroll mb-5">
         {expenseArray.map((expense: Expense, id: number) => (<Expense ExpenseObj={expense} key={id}></Expense>))}
         </div>}
       
-      {isExpenseArrayPopulated === false  && pageState === "listView" && (
+      {(isExpenseArrayPopulated === false  && pageState === "listView") && (
         <div className="text-3xl h-1/2 flex flex-col justify-center items-center">
           <FontAwesomeIcon icon={faMoneyBillTransfer} size="2xl" />
           <p className="mt-5">Add your first transaction!</p>

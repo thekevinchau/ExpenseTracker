@@ -24,11 +24,11 @@ export default function Expense({ ExpenseObj }: ExpenseProps): JSX.Element {
   const incomingTextStyle = "text-green-500";
 
   return (
-    <div className="ml-5 mr-5 flex">
-      <div className="w-full">
+    <div className="ml-5 mr-5 mt-1 flex bg-slate-50 h-14 items-center border border-gray-300">
+      <div className="w-full pl-2 pr-2">
         <p className="font-bold flex">{ExpenseObj.name}</p>
         <div className="flex justify-between">
-          <p>{ExpenseObj.category}</p>
+          <p className="italic">{ExpenseObj.category}</p>
           <p className={ExpenseObj.type === "incoming" ? incomingTextStyle : outgoingTextStyle}>${ExpenseObj.cost.toFixed(2)}</p>
         </div>
       </div>

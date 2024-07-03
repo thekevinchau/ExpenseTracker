@@ -1,12 +1,12 @@
-import { CategoryProps } from "./CategoryForms"
 
-interface CategoryProps2{
-    setCategoryName: () => void;
+
+interface CategoryProps{
+    name: string
 }
 
 
 
-export const Category = ({name}: CategoryProps, {setCategoryName}: CategoryProps2) => {
+export const Category = ({name}: CategoryProps) => {
     return <div>
 
         {name}

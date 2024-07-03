@@ -10,16 +10,16 @@ interface ExpenseProps {
   handleInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleSelect: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   addExpense: () => void;
+  categories: string[];
 }
-
 
 export default function ExpenseForms({
   handleInput,
   ExpenseObj,
   addExpense,
-  handleSelect
+  handleSelect,
+  categories,
 }: ExpenseProps): JSX.Element {
-
   return (
     <div className="h-full ml-10 mr-10 mt-5">
       <h1 className="font-bold mb-3">Add a Transaction</h1>
@@ -34,16 +34,33 @@ export default function ExpenseForms({
           onChange={handleInput}
         />
 
-
-        <Select placeholder="Select Option" variant="filled" size="md" className="text-center" name="category" value={ExpenseObj.category} onChange={handleSelect}>
+        <Select
+          placeholder="Select Option"
+          variant="filled"
+          size="md"
+          className="text-center"
+          name="category"
+          value={ExpenseObj.category}
+          onChange={handleSelect}
+        >
           <option value="Personal Expenses">Personal Expenses</option>
           <option value="Health">Health</option>
+          {categories.map((category: string) => (
+            <option value={category}>{category}</option>
+          ))}
         </Select>
 
-
-        <Select placeholder="Incoming or Outgoing?" size="md" variant="filled" className="text-center" value={ExpenseObj.type} name="type" onChange={handleSelect}>
-            <option value="incoming">Incoming</option>
-            <option value="outgoing">Outgoing</option>
+        <Select
+          placeholder="Incoming or Outgoing?"
+          size="md"
+          variant="filled"
+          className="text-center"
+          value={ExpenseObj.type}
+          name="type"
+          onChange={handleSelect}
+        >
+          <option value="incoming">Incoming</option>
+          <option value="outgoing">Outgoing</option>
         </Select>
 
         <Input
