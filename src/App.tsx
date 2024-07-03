@@ -30,7 +30,7 @@ function App() {
     }
 
 return <div className='h-screen flex justify-center'>
-    <Display toggleSettings={changeVisibility}></Display>
+    <Display toggleSettings={changeVisibility} categories={categoryArray}></Display>
     {settingsVisibility === true && <Settings addToCategoryArray={addToCategoryArray} handleCategoryInput={handleCategoryInput} categories={categoryArray} categoryName={categoryName}></Settings>}
 </div>
 }

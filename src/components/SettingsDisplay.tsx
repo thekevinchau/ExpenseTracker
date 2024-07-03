@@ -10,7 +10,7 @@ import { CategoryForms } from "./CategoryForms";
 import { CategoryProps } from "../App";
 
 
-const Settings = ({categories, addToCategoryArray, handleCategoryInput}:CategoryProps) => {
+const Settings = ({categories, addToCategoryArray, handleCategoryInput, categoryName}:CategoryProps) => {
   const [pageState, setPageState] = useState<string>("settings");
   return (
     <div className="border w-5/12 h-1/3 text-sm shadow-md text-sky-900">

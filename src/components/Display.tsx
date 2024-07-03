@@ -16,13 +16,14 @@ interface Expense {
 
 interface DisplayProps {
   toggleSettings: () => void;
+  categories: string[];
 }
 
 const emptyExpense = {
   name: "", category: "", cost: 0, type: ""
 }
 
-export default function Display({toggleSettings}: DisplayProps): JSX.Element {
+export default function Display({toggleSettings, categories}: DisplayProps): JSX.Element {
   const [ExpenseObj, setExpenseObj] = useState<Expense>(emptyExpense);
   const [totalBalance, setTotalBalance] = useState<number>(0.0);
   const [incomingBalance, setIncomingBalance] = useState<number>(0);
@@ -73,10 +74,7 @@ export default function Display({toggleSettings}: DisplayProps): JSX.Element {
         <h1 className="text-2xl text-black">US ${totalBalance.toFixed(2)}</h1>
       </div>
 
-      <IO_Block
-        incoming={incomingBalance}
-        outgoing={outgoingBalance}
-      ></IO_Block>
+      <IO_Block incoming={incomingBalance} outgoing={outgoingBalance}></IO_Block>
       <MenuButtons setPageState={setPageState}></MenuButtons>
 
       {pageState === "expenseForms" && (
@@ -85,7 +83,7 @@ export default function Display({toggleSettings}: DisplayProps): JSX.Element {
           handleSelect={handleSelect}
           addExpense={addExpense}
           ExpenseObj={ExpenseObj}
-          categories={categoryArray}
+          categories={categories}
         ></ExpenseForms>
       )}
 
