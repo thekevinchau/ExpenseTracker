@@ -13,7 +13,7 @@ interface CategoryFormsProps {
 
 export const CategoryForms = ({ setPageState, addToCategoryArray, handleCategoryInput, categoryName, categories}: CategoryFormsProps) => {
   return (
-    <div className="w-full text-sm text-sky-900 h-full">
+    <div className="w-full text-sm text-sky-900 overflow-scroll">
       <div className="flex justify-between">
         <h1 className=" text-lg font-bold">Categories</h1>
         <button onClick={() => setPageState("settings")}>
@@ -42,7 +42,7 @@ export const CategoryForms = ({ setPageState, addToCategoryArray, handleCategory
             Add
           </button>
         </ButtonGroup>
-        <div>
+        <div className="overflow-scroll h-44">
           {categories.map((category: string) => (
             <Category name={category}></Category>
           ))}

@@ -43,8 +43,6 @@ export default function ExpenseForms({
           value={ExpenseObj.category}
           onChange={handleSelect}
         >
-          <option value="Personal Expenses">Personal Expenses</option>
-          <option value="Health">Health</option>
           {categories.map((category: string) => (
             <option value={category}>{category}</option>
           ))}

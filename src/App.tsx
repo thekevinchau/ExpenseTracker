@@ -13,7 +13,7 @@ export interface CategoryProps {
 
 function App() {
     const [settingsVisibility, setSettingsVisibility] = useState<boolean>(false);
-    const [categoryArray, setCategoryArray] = useState<string[]>(["pee","poop","fart"]);
+    const [categoryArray, setCategoryArray] = useState<string[]>(["Dining","Travel","Health", "Shopping"]);
     const [categoryName, setCategoryName] = useState<string>("");
 
     function changeVisibility () {
