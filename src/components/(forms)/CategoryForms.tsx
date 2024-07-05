@@ -1,17 +1,23 @@
-import {ButtonGroup, Input } from "@chakra-ui/react";
+import { ButtonGroup, Input } from "@chakra-ui/react";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Category } from "./Category";
+import { Category } from "../Category";
 
 interface CategoryFormsProps {
-  setPageState: (page: string) => void,
-  addToCategoryArray: () => void,
-  handleCategoryInput: (event: React.ChangeEvent<HTMLInputElement>) => void,
-  categories: string[],
-  categoryName: string
+  setPageState: (page: string) => void;
+  addToCategoryArray: () => void;
+  handleCategoryInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  categories: string[];
+  categoryName: string;
 }
 
-export const CategoryForms = ({ setPageState, addToCategoryArray, handleCategoryInput, categoryName, categories}: CategoryFormsProps) => {
+export const CategoryForms = ({
+  setPageState,
+  addToCategoryArray,
+  handleCategoryInput,
+  categoryName,
+  categories,
+}: CategoryFormsProps) => {
   return (
     <div className="w-full text-sm text-sky-900 overflow-scroll">
       <div className="flex justify-between">

@@ -1,6 +1,11 @@
-import { faLanguage, faCircleHalfStroke, faCoins, faList } from "@fortawesome/free-solid-svg-icons";
+import {
+  faLanguage,
+  faCircleHalfStroke,
+  faCoins,
+  faList,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { settingsProps } from "./SettingsDisplay";
+import { settingsProps } from "../(primary_display)/SettingsDisplay";
 
 export const SettingsButtons = ({ setPageState }: settingsProps) => {
   return (

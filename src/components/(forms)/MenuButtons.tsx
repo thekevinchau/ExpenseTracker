@@ -13,6 +13,9 @@ interface MenuButtonsProps {
 export default function MenuButtons({
   setPageState,
 }: MenuButtonsProps): JSX.Element {
+
+
+
   return (
     <div className="flex justify-between font-bold ml-5 mr-2 mt-4 text-sm bg-opacity-20">
       <div>

@@ -1,7 +1,7 @@
-import { SettingsButtons } from "./SettingsButtons";
+import { SettingsButtons } from "../(forms)/SettingsButtons";
 import { useState } from "react";
-import { CategoryForms } from "./CategoryForms";
-import { CategoryProps } from "../App";
+import { CategoryForms } from "../(forms)/CategoryForms";
+import { CategoryProps } from "../../App";
 
 export interface settingsProps {
   setPageState: (page: string) => void;

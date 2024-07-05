@@ -19,7 +19,6 @@ interface ExpenseProps {
 }
 
 export default function Expense({ ExpenseObj }: ExpenseProps): JSX.Element {
-
   const outgoingTextStyle = "text-red-600";
   const incomingTextStyle = "text-green-500";
 
@@ -29,7 +28,15 @@ export default function Expense({ ExpenseObj }: ExpenseProps): JSX.Element {
         <p className="font-bold flex">{ExpenseObj.name}</p>
         <div className="flex justify-between">
           <p className="italic">{ExpenseObj.category}</p>
-          <p className={ExpenseObj.type === "incoming" ? incomingTextStyle : outgoingTextStyle}>${ExpenseObj.cost.toFixed(2)}</p>
+          <p
+            className={
+              ExpenseObj.type === "incoming"
+                ? incomingTextStyle
+                : outgoingTextStyle
+            }
+          >
+            ${ExpenseObj.cost.toFixed(2)}
+          </p>
         </div>
       </div>
     </div>
