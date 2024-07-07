@@ -10,7 +10,7 @@ import { TotalBalance } from "./TotalBalance";
 import { ChartDisplay } from "../charts/ChartDisplay";
 
 
-interface Expense {
+export interface Expense {
   name: string;
   category: string;
   cost: number;
@@ -100,7 +100,7 @@ export default function Display({
           categories={categories}
         ></ExpenseForms>
       )}
-      {pageState === "stats" && <ChartDisplay></ChartDisplay>}
+      {pageState === "stats" && <ChartDisplay expenses={expenseArray}></ChartDisplay>}
 
       {isExpenseArrayPopulated && pageState === "listView" && (
         <div className="mt-5 flex flex-col h-auto overflow-scroll mb-5">
