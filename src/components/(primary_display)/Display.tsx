@@ -38,8 +38,7 @@ export default function Display({
   const [outgoingBalance, setOutGoingBalance] = useState<number>(0);
   const [expenseArray, setExpenseArray] = useState<Expense[]>([]);
   const [pageState, setPageState] = useState<string>("listView");
-  const isExpenseArrayPopulated =
-    pageState === "listView" && expenseArray.length > 0;
+  const isExpenseArrayPopulated = pageState === "listView" && expenseArray.length > 0;
   const isValidExpense = ExpenseObj.name.length && ExpenseObj.category.length && ExpenseObj.cost && ExpenseObj.type.length > 0;
 
   const addExpense = () => {
@@ -65,19 +64,12 @@ export default function Display({
 
   const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = event.target;
-    setExpenseObj({
-      ...ExpenseObj,
-      [name]: value,
-    });
+    setExpenseObj({...ExpenseObj,[name]: value,});
   };
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //destructure the name and value from the event
     const { name, value } = event.target;
-    setExpenseObj({
-      ...ExpenseObj,
-      [name]: name === "cost" ? parseFloat(value) : value,
-    });
+    setExpenseObj({...ExpenseObj, [name]: name === "cost" ? parseFloat(value) : value});
   };
 
   return (

@@ -1,3 +1,4 @@
+import { Button } from "@chakra-ui/react";
 import { faTag } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -8,12 +9,18 @@ interface CategoryProps {
 
 export const Category = ({ name, deleteCategory }: CategoryProps) => {
   return (
-    <div className="mt-[0.1rem] h-8 flex items-center shadow-sm">
-      <div className="h-full w-8 flex items-center justify-center">
+    <div className="mt-[0.1rem] h-8 flex items-center justify-between shadow-sm">
+      <div className="h-full w-8 flex items-center">
         <FontAwesomeIcon icon={faTag} size="lg" />
+        <p className="ml-2">{name}</p>
       </div>
-      {name}
-      <button onClick={() => deleteCategory(name)}>delete</button>
+      <Button
+        onClick={() => deleteCategory(name)}
+        colorScheme="red"
+        variant={"link"}
+      >
+        Remove
+      </Button>
     </div>
   );
 };
