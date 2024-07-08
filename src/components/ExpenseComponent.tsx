@@ -18,7 +18,7 @@ interface ExpenseProps {
   };
 }
 
-export default function Expense({ ExpenseObj }: ExpenseProps): JSX.Element {
+export default function ExpenseComponent({ ExpenseObj }: ExpenseProps): JSX.Element {
   const outgoingTextStyle = "text-red-600";
   const incomingTextStyle = "text-green-500";
 

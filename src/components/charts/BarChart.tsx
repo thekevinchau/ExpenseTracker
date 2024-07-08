@@ -4,37 +4,23 @@ import {
   CartesianGrid,
   Legend,
   ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
 import { Expense } from "../(primary_display)/Display";
+import { convertHashToArray } from "./convertHashToArray";
 
 interface BarChartProps {
   expenses: Expense[];
 }
 
-interface ExpensesByCategory {
+export interface ExpensesByCategory {
   [category: string]: number;
 }
 
 export const BarComponent = ({ expenses }: BarChartProps) => {
-  //General Idea: hash all expense objects into new objects with the keys being the categories and the value being the sum of expense cost
-  const convertHashToArray = () => {
-    const ExpensesByCategory = expenses.reduce((acc: ExpensesByCategory, expense: Expense) => {
-      if(!acc[expense.category]){
-        acc[expense.category] = 0;
-      }
-      acc[expense.category] += expense.cost
-      return acc;
-    }, {})
-    const ExpensesByCategoryArray = Object.keys(ExpensesByCategory).map((category: string) => ({
-      category,
-      cost: ExpensesByCategory[category]
-    }))
-    return ExpensesByCategoryArray
-  }
-
-  const expensesReducer = convertHashToArray();
+  const expensesReducer = convertHashToArray(expenses);
   console.log(expensesReducer)
 
   return (
@@ -45,6 +31,7 @@ export const BarComponent = ({ expenses }: BarChartProps) => {
         <YAxis />
         <Legend />
         <Bar dataKey={"cost"} fill="#2563eb"></Bar>
+        <Tooltip/>
       </BarChart>
     </ResponsiveContainer>
   );

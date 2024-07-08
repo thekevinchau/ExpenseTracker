@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Expense from "../Expense";
+import Expense from "../ExpenseComponent";
 import ExpenseForms from "../(forms)/ExpenseForms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoneyBillTransfer } from "@fortawesome/free-solid-svg-icons";
@@ -8,7 +8,7 @@ import MenuButtons from "../(forms)/MenuButtons";
 import ExpenseHeader from "./ExpenseHeader";
 import { TotalBalance } from "./TotalBalance";
 import { ChartDisplay } from "../charts/ChartDisplay";
-
+import { ExpenseMapping } from "./ExpenseMapping";
 
 export interface Expense {
   name: string;
@@ -39,17 +39,21 @@ export default function Display({
   const [outgoingBalance, setOutGoingBalance] = useState<number>(0);
   const [expenseArray, setExpenseArray] = useState<Expense[]>([]);
   const [pageState, setPageState] = useState<string>("listView");
-  const isExpenseArrayPopulated = pageState === "listView" && expenseArray.length > 0;
-  const isValidExpense = (ExpenseObj.name.length > 0 && ExpenseObj.category.length > 0 && ExpenseObj.cost !== 0 && ExpenseObj.type.length > 0)
+  const isExpenseArrayPopulated =
+    pageState === "listView" && expenseArray.length > 0;
+  const isValidExpense =
+    ExpenseObj.name.length > 0 &&
+    ExpenseObj.category.length > 0 &&
+    ExpenseObj.cost !== 0 &&
+    ExpenseObj.type.length > 0;
 
   const addExpense = () => {
-    if (isValidExpense){
+    if (isValidExpense) {
       setExpenseArray([...expenseArray, ExpenseObj]);
       calculateBalance(ExpenseObj.type);
       setExpenseObj(emptyExpense);
       setPageState("listView");
-    }
-    else{
+    } else {
       alert("You must fill out all fields of this expense!");
     }
   };
@@ -57,6 +61,7 @@ export default function Display({
   const calculateBalance = (transactionType: string) => {
     if (transactionType === "incoming") {
       setTotalBalance(totalBalance + ExpenseObj.cost);
+
       setIncomingBalance(incomingBalance + ExpenseObj.cost);
     } else if (transactionType === "outgoing") {
       setTotalBalance(totalBalance - ExpenseObj.cost);
@@ -82,32 +87,20 @@ export default function Display({
   };
 
   return (
-    <div className="flex flex-col border w-5/12 h-3/4 text-sm shadow-2xl text-sky-900">
+    <div className="flex flex-col border w-5/12 h-2/3 text-sm shadow-2xl text-sky-900">
       <ExpenseHeader toggleSettings={toggleSettings}></ExpenseHeader>
       <TotalBalance totalBalance={totalBalance}></TotalBalance>
-      <IO_Block
-        incoming={incomingBalance}
-        outgoing={outgoingBalance}
-      ></IO_Block>
+      <IO_Block incoming={incomingBalance} outgoing={outgoingBalance}></IO_Block>
       <MenuButtons setPageState={setPageState}></MenuButtons>
 
       {pageState === "expenseForms" && (
-        <ExpenseForms
-          handleInput={handleInput}
-          handleSelect={handleSelect}
-          addExpense={addExpense}
-          ExpenseObj={ExpenseObj}
-          categories={categories}
-        ></ExpenseForms>
+        <ExpenseForms handleInput={handleInput} handleSelect={handleSelect} addExpense={addExpense} ExpenseObj={ExpenseObj} categories={categories}></ExpenseForms>
       )}
-      {pageState === "stats" && <ChartDisplay expenses={expenseArray}></ChartDisplay>}
+      {pageState === "stats" && (
+        <ChartDisplay expenses={expenseArray} ExpenseTypeObject={{incoming: incomingBalance, outgoing: outgoingBalance}}></ChartDisplay>
+      )}
 
-      {isExpenseArrayPopulated && pageState === "listView" && (
-        <div className="mt-5 flex flex-col h-auto overflow-scroll mb-5">
-          {expenseArray.map((expense: Expense, id: number) => (
-            <Expense ExpenseObj={expense} key={id}></Expense>
-          ))}
-        </div>
+      {isExpenseArrayPopulated && pageState === "listView" && (<ExpenseMapping expenses={expenseArray}></ExpenseMapping>
       )}
 
       {isExpenseArrayPopulated === false && pageState === "listView" && (
