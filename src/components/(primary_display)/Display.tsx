@@ -14,8 +14,8 @@ export interface Expense {
   category: string;
   cost: number;
   type: string;
+  id: number,
 }
-
 interface DisplayProps {
   toggleSettings: () => void;
   categories: string[];
@@ -26,12 +26,10 @@ const emptyExpense = {
   category: "",
   cost: 0,
   type: "",
+  id: 0,
 };
 
-export default function Display({
-  toggleSettings,
-  categories,
-}: DisplayProps): JSX.Element {
+export default function Display({toggleSettings,categories,}: DisplayProps): JSX.Element {
   const [ExpenseObj, setExpenseObj] = useState<Expense>(emptyExpense);
   const [totalBalance, setTotalBalance] = useState<number>(0.0);
   const [incomingBalance, setIncomingBalance] = useState<number>(0);
@@ -40,6 +38,7 @@ export default function Display({
   const [pageState, setPageState] = useState<string>("listView");
   const isExpenseArrayPopulated = pageState === "listView" && expenseArray.length > 0;
   const isValidExpense = ExpenseObj.name.length && ExpenseObj.category.length && ExpenseObj.cost && ExpenseObj.type.length > 0;
+
 
   const addExpense = () => {
     if (isValidExpense) {
@@ -64,7 +63,7 @@ export default function Display({
 
   const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = event.target;
-    setExpenseObj({...ExpenseObj,[name]: value,});
+    setExpenseObj({...ExpenseObj,[name]: value});
   };
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,7 +83,7 @@ export default function Display({
       {pageState === "stats" && (
         <ChartDisplay expenses={expenseArray} ExpenseTypeObject={{incoming: incomingBalance, outgoing: outgoingBalance}}></ChartDisplay>
       )}
-      {isExpenseArrayPopulated && pageState === "listView" && (<ExpenseMapping expenses={expenseArray}></ExpenseMapping>
+      {isExpenseArrayPopulated && pageState === "listView" && (<ExpenseMapping expenses={expenseArray} setExpenseArray={setExpenseArray}></ExpenseMapping>
       )}
       {isExpenseArrayPopulated === false && pageState === "listView" && <EmptyTransaction></EmptyTransaction>}
     </div>

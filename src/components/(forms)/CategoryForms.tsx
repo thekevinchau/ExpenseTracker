@@ -52,7 +52,7 @@ export const CategoryForms = ({
         </ButtonGroup>
         <div className="overflow-scroll h-44">
           {categories.map((category: string) => (
-            <Category name={category} deleteCategory={deleteCategory}></Category>
+            <Category name={category} deleteCategory={deleteCategory} key={category}></Category>
           ))}
         </div>
       </div>

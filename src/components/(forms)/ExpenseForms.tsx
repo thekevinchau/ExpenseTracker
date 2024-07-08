@@ -44,7 +44,7 @@ export default function ExpenseForms({
           onChange={handleSelect}
         >
           {categories.map((category: string) => (
-            <option value={category}>{category}</option>
+            <option value={category} key={category}>{category}</option>
           ))}
         </Select>
 
