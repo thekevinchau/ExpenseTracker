@@ -1,17 +1,15 @@
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { Expense } from "../(primary_display)/Display"
-import { convertHashToArray } from "./convertHashToArray"
 
 
 interface LineChartProps{
-    expenses: Expense[]
+    ExpenseTypeObject: object;
 }
 
-export const LineChartComponent = ({expenses}: LineChartProps) => {
-    const expensesReducer = convertHashToArray(expenses);
+export const LineChartComponent = ({ExpenseTypeObject}: LineChartProps) => {
+
 
     return <ResponsiveContainer width={"100%"} height={"100%"}>
-        <LineChart width={200} height={200} data={expensesReducer} margin={{ right: 60 }}>
+        <LineChart width={200} height={200} data={ExpenseTypeObject} margin={{ right: 60 }}>
             <CartesianGrid strokeDasharray={"3 3"}/>
             <XAxis dataKey={"category"}/>
             <YAxis/>

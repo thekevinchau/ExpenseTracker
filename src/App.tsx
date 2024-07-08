@@ -7,18 +7,19 @@ export interface CategoryProps {
   addToCategoryArray: () => void;
   handleCategoryInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
   categories: string[];
-  categoryName: string;
+  categoryName: string,
+  deleteCategory: (name: string) => void;
 }
 
 function App() {
   const [settingsVisibility, setSettingsVisibility] = useState<boolean>(false);
+  const [categoryName, setCategoryName] = useState<string>("");
   const [categoryArray, setCategoryArray] = useState<string[]>([
     "Dining",
     "Travel",
     "Health",
     "Shopping",
   ]);
-  const [categoryName, setCategoryName] = useState<string>("");
 
   function changeVisibility() {
     setSettingsVisibility(!settingsVisibility);
@@ -27,15 +28,19 @@ function App() {
 
   function addToCategoryArray() {
     if (categoryArray.includes(categoryName)) {
-        alert("Category already exists!")
-    }
-    else{
-        setCategoryArray([...categoryArray, categoryName]);
+      alert("Category already exists!");
+    } else {
+      setCategoryArray([...categoryArray, categoryName]);
     }
   }
   function handleCategoryInput(event: React.ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
     setCategoryName(value);
+  }
+
+  function deleteCategory(name: string){
+    const categoryToBeDeleted = categoryArray.filter((category: string) => category !== name)
+    setCategoryArray(categoryToBeDeleted);
   }
 
   return (
@@ -50,6 +55,7 @@ function App() {
           handleCategoryInput={handleCategoryInput}
           categories={categoryArray}
           categoryName={categoryName}
+          deleteCategory={deleteCategory}
         ></Settings>
       )}
     </div>

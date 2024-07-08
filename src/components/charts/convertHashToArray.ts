@@ -1,6 +1,8 @@
 import { Expense } from "../(primary_display)/Display";
 import { ExpensesByCategory } from "./BarChart";
 
+
+//This function is intended to be used across all the plotting charts.
 export const convertHashToArray = (expenses: Expense[]) => {
     const ExpensesByCategory = expenses.reduce((acc: ExpensesByCategory, expense: Expense) => {
       if(!acc[expense.category]){

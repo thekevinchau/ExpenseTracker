@@ -1,20 +1,19 @@
 import { useState } from "react";
 import Expense from "../ExpenseComponent";
 import ExpenseForms from "../(forms)/ExpenseForms";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMoneyBillTransfer } from "@fortawesome/free-solid-svg-icons";
 import IO_Block from "./IncomingOutgoing";
 import MenuButtons from "../(forms)/MenuButtons";
 import ExpenseHeader from "./ExpenseHeader";
 import { TotalBalance } from "./TotalBalance";
 import { ChartDisplay } from "../charts/ChartDisplay";
 import { ExpenseMapping } from "./ExpenseMapping";
+import { EmptyTransaction } from "./EmptyTransactions";
 
 export interface Expense {
   name: string;
   category: string;
   cost: number;
-  type: string; //true = receiving, false = sending
+  type: string;
 }
 
 interface DisplayProps {
@@ -41,11 +40,7 @@ export default function Display({
   const [pageState, setPageState] = useState<string>("listView");
   const isExpenseArrayPopulated =
     pageState === "listView" && expenseArray.length > 0;
-  const isValidExpense =
-    ExpenseObj.name.length > 0 &&
-    ExpenseObj.category.length > 0 &&
-    ExpenseObj.cost !== 0 &&
-    ExpenseObj.type.length > 0;
+  const isValidExpense = ExpenseObj.name.length && ExpenseObj.category.length && ExpenseObj.cost && ExpenseObj.type.length > 0;
 
   const addExpense = () => {
     if (isValidExpense) {
@@ -61,7 +56,6 @@ export default function Display({
   const calculateBalance = (transactionType: string) => {
     if (transactionType === "incoming") {
       setTotalBalance(totalBalance + ExpenseObj.cost);
-
       setIncomingBalance(incomingBalance + ExpenseObj.cost);
     } else if (transactionType === "outgoing") {
       setTotalBalance(totalBalance - ExpenseObj.cost);
@@ -92,23 +86,15 @@ export default function Display({
       <TotalBalance totalBalance={totalBalance}></TotalBalance>
       <IO_Block incoming={incomingBalance} outgoing={outgoingBalance}></IO_Block>
       <MenuButtons setPageState={setPageState}></MenuButtons>
-
       {pageState === "expenseForms" && (
         <ExpenseForms handleInput={handleInput} handleSelect={handleSelect} addExpense={addExpense} ExpenseObj={ExpenseObj} categories={categories}></ExpenseForms>
       )}
       {pageState === "stats" && (
         <ChartDisplay expenses={expenseArray} ExpenseTypeObject={{incoming: incomingBalance, outgoing: outgoingBalance}}></ChartDisplay>
       )}
-
       {isExpenseArrayPopulated && pageState === "listView" && (<ExpenseMapping expenses={expenseArray}></ExpenseMapping>
       )}
-
-      {isExpenseArrayPopulated === false && pageState === "listView" && (
-        <div className="text-3xl h-1/2 flex flex-col justify-center items-center">
-          <FontAwesomeIcon icon={faMoneyBillTransfer} size="2xl" />
-          <p className="mt-5">Add your first transaction!</p>
-        </div>
-      )}
+      {isExpenseArrayPopulated === false && pageState === "listView" && <EmptyTransaction></EmptyTransaction>}
     </div>
   );
 }

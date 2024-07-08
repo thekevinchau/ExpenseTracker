@@ -7,6 +7,10 @@ import { Expense } from "../(primary_display)/Display";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartColumn } from "@fortawesome/free-solid-svg-icons";
 
+interface Balance {
+  
+}
+
 interface ChartDisplayProps {
   expenses: Expense[],
   ExpenseTypeObject: object,

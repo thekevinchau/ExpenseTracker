@@ -4,7 +4,7 @@ import { CategoryForms } from "../(forms)/CategoryForms";
 import { CategoryProps } from "../../App";
 
 export interface settingsProps {
-  setPageState: (page: string) => void;
+  setPageState: (page: string) => void,
 }
 
 const Settings = ({
@@ -12,6 +12,7 @@ const Settings = ({
   addToCategoryArray,
   handleCategoryInput,
   categoryName,
+  deleteCategory
 }: CategoryProps) => {
   const [pageState, setPageState] = useState<string>("settings");
   return (
@@ -24,6 +25,7 @@ const Settings = ({
             addToCategoryArray={addToCategoryArray}
             handleCategoryInput={handleCategoryInput}
             categoryName={categoryName}
+            deleteCategory={deleteCategory}
           ></CategoryForms>
         )}
         {pageState === "settings" && (

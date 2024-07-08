@@ -9,6 +9,7 @@ interface CategoryFormsProps {
   handleCategoryInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
   categories: string[];
   categoryName: string;
+  deleteCategory: (name: string) => void;
 }
 
 export const CategoryForms = ({
@@ -17,6 +18,7 @@ export const CategoryForms = ({
   handleCategoryInput,
   categoryName,
   categories,
+  deleteCategory
 }: CategoryFormsProps) => {
   return (
     <div className="w-full text-sm text-sky-900 overflow-scroll">
@@ -50,7 +52,7 @@ export const CategoryForms = ({
         </ButtonGroup>
         <div className="overflow-scroll h-44">
           {categories.map((category: string) => (
-            <Category name={category}></Category>
+            <Category name={category} deleteCategory={deleteCategory}></Category>
           ))}
         </div>
       </div>
