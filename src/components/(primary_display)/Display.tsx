@@ -21,6 +21,12 @@ interface DisplayProps {
   categories: string[];
 }
 
+interface Balances {
+  incoming: number,
+  outgoing: number,
+  total: number,
+}
+
 const emptyExpense = {
   name: "",
   category: "",
@@ -32,8 +38,7 @@ const emptyExpense = {
 export default function Display({toggleSettings,categories,}: DisplayProps): JSX.Element {
   const [ExpenseObj, setExpenseObj] = useState<Expense>(emptyExpense);
   const [totalBalance, setTotalBalance] = useState<number>(0.0);
-  const [incomingBalance, setIncomingBalance] = useState<number>(0);
-  const [outgoingBalance, setOutGoingBalance] = useState<number>(450.00);
+  const [balances, setBalances] = useState<Balances>({incoming: 0, outgoing: 0, total: 0})
   const [expenseArray, setExpenseArray] = useState<Expense[]>([]);
   const [pageState, setPageState] = useState<string>("listView");
   const isExpenseArrayPopulated = pageState === "listView" && expenseArray.length > 0;
@@ -55,10 +60,11 @@ export default function Display({toggleSettings,categories,}: DisplayProps): JSX
   const calculateBalance = (transactionType: string) => {
     if (transactionType === "incoming") {
       setTotalBalance(totalBalance + ExpenseObj.cost);
-      setIncomingBalance(incomingBalance + ExpenseObj.cost);
+      setBalances({...balances, [transactionType]: balances.incoming + ExpenseObj.cost})
+      //setIncomingBalance(incomingBalance + ExpenseObj.cost);
     } else if (transactionType === "outgoing") {
       setTotalBalance(totalBalance - ExpenseObj.cost);
-      setOutGoingBalance(outgoingBalance + ExpenseObj.cost);
+      //setOutGoingBalance(outgoingBalance + ExpenseObj.cost);
     }
   };
 
@@ -76,13 +82,13 @@ export default function Display({toggleSettings,categories,}: DisplayProps): JSX
     <div className="flex flex-col border w-5/12 h-2/3 text-sm shadow-2xl text-sky-900">
       <ExpenseHeader toggleSettings={toggleSettings}></ExpenseHeader>
       <TotalBalance totalBalance={totalBalance}></TotalBalance>
-      <IO_Block incoming={incomingBalance} outgoing={outgoingBalance}></IO_Block>
+      <IO_Block incoming={balances.incoming} outgoing={balances.outgoing}></IO_Block>
       <MenuButtons setPageState={setPageState}></MenuButtons>
       {pageState === "expenseForms" && (
         <ExpenseForms handleInput={handleInput} handleSelect={handleSelect} addExpense={addExpense} ExpenseObj={ExpenseObj} categories={categories}></ExpenseForms>
       )}
       {pageState === "stats" && (
-        <ChartDisplay expenses={expenseArray} ExpenseTypeObject={{incoming: incomingBalance, outgoing: outgoingBalance}}></ChartDisplay>
+        <ChartDisplay expenses={expenseArray}></ChartDisplay>
       )}
       {isExpenseArrayPopulated && pageState === "listView" && (<ExpenseMapping expenses={expenseArray} setExpenseArray={setExpenseArray} setIncomingBalance={setIncomingBalance} setOutGoingBalance={setOutGoingBalance} balances={{incoming: incomingBalance, total: totalBalance, outgoing: outgoingBalance}}></ExpenseMapping>
       )}

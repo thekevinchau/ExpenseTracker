@@ -2,3 +2,6 @@
 Finished removing capability for expense.
 
 TODO: Create a function inside "Display" component that handles removal of an expense. Right now we are able to visually remove it but we need to handle the logic of removing it from the incoming/outgoing fields and the current balance field.
+
+7/10
+TODO: Refactor the entire balance system.
