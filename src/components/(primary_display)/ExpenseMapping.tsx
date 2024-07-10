@@ -1,11 +1,10 @@
 import ExpenseComponent from "../ExpenseComponent";
-import { Expense } from "./Display";
+import { Balances, Expense } from "./Display";
 
 interface ExpenseMappingProps {
   expenses: Expense[];
   setExpenseArray: (expenses: Expense[]) => void;
-  setIncomingBalance: (num: number) => void;
-  setOutGoingBalance: (num: number) => void;
+  setBalances: (updatedExpense: Balances) => void;
   balances: {
     incoming: number,
     outgoing: number,
@@ -13,7 +12,7 @@ interface ExpenseMappingProps {
   }
 }
 
-export const ExpenseMapping = ({ expenses, setExpenseArray, setIncomingBalance, setOutGoingBalance, balances}: ExpenseMappingProps) => {
+export const ExpenseMapping = ({ expenses, setExpenseArray, setBalances, balances}: ExpenseMappingProps) => {
   const expenseArrayWithIDs = expenses.map((expense: Expense, id: number) => expense.id = id+1)
 
   function removeExpense(idToBeDeleted: number){
@@ -22,11 +21,11 @@ export const ExpenseMapping = ({ expenses, setExpenseArray, setIncomingBalance, 
     //if the type is incoming, we should remove it from "incoming" and add back the amount to the total balance.
     if (findRemovedExpense?.type === "outgoing"){
       const difference = balances.outgoing - findRemovedExpense.cost;
-      setOutGoingBalance(difference);
+      setBalances({...balances, outgoing: difference, total: balances.total + difference});
     }
     else if (findRemovedExpense?.type === "incoming"){
       const difference = balances.incoming - findRemovedExpense?.cost;
-      setIncomingBalance(difference);
+      setBalances({...balances, incoming: difference})
     }
 
     const filteredExpenses = expenses.filter((expense: Expense) => expense !== findRemovedExpense)

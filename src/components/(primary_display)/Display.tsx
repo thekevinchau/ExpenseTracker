@@ -21,7 +21,7 @@ interface DisplayProps {
   categories: string[];
 }
 
-interface Balances {
+export interface Balances {
   incoming: number,
   outgoing: number,
   total: number,
@@ -35,9 +35,8 @@ const emptyExpense = {
   id: 0,
 };
 
-export default function Display({toggleSettings,categories,}: DisplayProps): JSX.Element {
+export default function Display({toggleSettings,categories}: DisplayProps): JSX.Element {
   const [ExpenseObj, setExpenseObj] = useState<Expense>(emptyExpense);
-  const [totalBalance, setTotalBalance] = useState<number>(0.0);
   const [balances, setBalances] = useState<Balances>({incoming: 0, outgoing: 0, total: 0})
   const [expenseArray, setExpenseArray] = useState<Expense[]>([]);
   const [pageState, setPageState] = useState<string>("listView");
@@ -59,11 +58,10 @@ export default function Display({toggleSettings,categories,}: DisplayProps): JSX
 
   const calculateBalance = (transactionType: string) => {
     if (transactionType === "incoming") {
-      setTotalBalance(totalBalance + ExpenseObj.cost);
-      setBalances({...balances, [transactionType]: balances.incoming + ExpenseObj.cost})
+      setBalances({...balances, [transactionType]: balances.incoming + ExpenseObj.cost, total: balances.total + ExpenseObj.cost})
       //setIncomingBalance(incomingBalance + ExpenseObj.cost);
     } else if (transactionType === "outgoing") {
-      setTotalBalance(totalBalance - ExpenseObj.cost);
+      setBalances({...balances, [transactionType]: balances.outgoing + ExpenseObj.cost, total: balances.total - ExpenseObj.cost})
       //setOutGoingBalance(outgoingBalance + ExpenseObj.cost);
     }
   };
@@ -81,7 +79,7 @@ export default function Display({toggleSettings,categories,}: DisplayProps): JSX
   return (
     <div className="flex flex-col border w-5/12 h-2/3 text-sm shadow-2xl text-sky-900">
       <ExpenseHeader toggleSettings={toggleSettings}></ExpenseHeader>
-      <TotalBalance totalBalance={totalBalance}></TotalBalance>
+      <TotalBalance totalBalance={balances.total}></TotalBalance>
       <IO_Block incoming={balances.incoming} outgoing={balances.outgoing}></IO_Block>
       <MenuButtons setPageState={setPageState}></MenuButtons>
       {pageState === "expenseForms" && (
@@ -90,7 +88,7 @@ export default function Display({toggleSettings,categories,}: DisplayProps): JSX
       {pageState === "stats" && (
         <ChartDisplay expenses={expenseArray}></ChartDisplay>
       )}
-      {isExpenseArrayPopulated && pageState === "listView" && (<ExpenseMapping expenses={expenseArray} setExpenseArray={setExpenseArray} setIncomingBalance={setIncomingBalance} setOutGoingBalance={setOutGoingBalance} balances={{incoming: incomingBalance, total: totalBalance, outgoing: outgoingBalance}}></ExpenseMapping>
+      {isExpenseArrayPopulated && pageState === "listView" && (<ExpenseMapping expenses={expenseArray} setExpenseArray={setExpenseArray} balances={balances} setBalances={setBalances}></ExpenseMapping>
       )}
       {isExpenseArrayPopulated === false && pageState === "listView" && <EmptyTransaction></EmptyTransaction>}
     </div>
