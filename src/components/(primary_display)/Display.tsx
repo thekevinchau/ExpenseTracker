@@ -50,6 +50,7 @@ export default function Display({toggleSettings,categories}: DisplayProps): JSX.
       calculateBalance(ExpenseObj.type);
       setExpenseObj(emptyExpense);
       setPageState("listView");
+      console.log(balances.total);
     } else {
       alert("You must fill out all fields of this expense!");
     }
@@ -59,10 +60,8 @@ export default function Display({toggleSettings,categories}: DisplayProps): JSX.
   const calculateBalance = (transactionType: string) => {
     if (transactionType === "incoming") {
       setBalances({...balances, [transactionType]: balances.incoming + ExpenseObj.cost, total: balances.total + ExpenseObj.cost})
-      //setIncomingBalance(incomingBalance + ExpenseObj.cost);
     } else if (transactionType === "outgoing") {
       setBalances({...balances, [transactionType]: balances.outgoing + ExpenseObj.cost, total: balances.total - ExpenseObj.cost})
-      //setOutGoingBalance(outgoingBalance + ExpenseObj.cost);
     }
   };
 

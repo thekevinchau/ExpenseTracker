@@ -20,13 +20,16 @@ export const ExpenseMapping = ({ expenses, setExpenseArray, setBalances, balance
     const findRemovedExpense = expenses.find((expense: Expense) => expense.id === idToBeDeleted)
     //if the type is incoming, we should remove it from "incoming" and add back the amount to the total balance.
     if (findRemovedExpense?.type === "outgoing"){
-      const difference = balances.outgoing - findRemovedExpense.cost;
-      setBalances({...balances, outgoing: difference, total: balances.total + difference});
+      const updatedOutgoing = balances.outgoing - findRemovedExpense.cost;
+      const updatedTotal = balances.total + findRemovedExpense.cost;
+      setBalances({...balances, outgoing: updatedOutgoing, total: updatedTotal});
     }
     else if (findRemovedExpense?.type === "incoming"){
-      const difference = balances.incoming - findRemovedExpense?.cost;
-      setBalances({...balances, incoming: difference})
+      const updatedIncoming = balances.incoming - findRemovedExpense.cost;
+      const updatedTotal = balances.total - findRemovedExpense.cost
+      setBalances({...balances, incoming: updatedIncoming, total: updatedTotal})
     }
+    console.log(balances.total)
 
     const filteredExpenses = expenses.filter((expense: Expense) => expense !== findRemovedExpense)
     setExpenseArray(filteredExpenses);
